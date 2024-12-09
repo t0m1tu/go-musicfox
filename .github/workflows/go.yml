@@ -36,8 +36,16 @@ jobs:
         go mod download
 
     - name: Build
-      run: GOARCH=arm64 GOOS=darwin CGO_ENABLED=0 SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path) CC=$(xcrun --sdk iphoneos -f clang) CFLAGS="-s -w -arch arm64 -isysroot $SDKROOT" CXXFLAGS="-s -w -arch arm64 -isysroot $SDKROOT" CGO_LDFLAGS="-s -w -isysroot $SDKROOT" CGO_CFLAGS="-s -w -isysroot $SDKROOT" make
-
+      run: |
+        GOARCH=arm64 GOOS=darwin CGO_ENABLED=1 \
+        SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path) \
+        CC=$(xcrun --sdk iphoneos -f clang) \
+        CFLAGS="-s -w -arch arm64 -isysroot $SDKROOT" \
+        CXXFLAGS="-s -w -arch arm64 -isysroot $SDKROOT" \
+        CGO_LDFLAGS="-s -w -isysroot $SDKROOT" \
+        CGO_CFLAGS="-s -w -isysroot $SDKROOT" \
+        make
+        
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
