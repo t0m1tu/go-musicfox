@@ -33,6 +33,7 @@ jobs:
         export CXXFLAGS="-s -w -arch arm64 -isysroot $SDKROOT"
         export CGO_LDFLAGS="-s -w -isysroot $SDKROOT"
         export CGO_CFLAGS="-s -w -isysroot $SDKROOT"
+        echo $SDKROOT
         go mod download
 
     - name: Build
