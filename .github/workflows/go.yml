@@ -24,19 +24,18 @@ jobs:
     - name: Install dependencies
       run: |
         xcodebuild -version
-        export GOARCH=arm64
-        export GOOS=darwin
-        export CGO_ENABLED=0
-        export SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path)
-        export CC=$(xcrun --sdk iphoneos -f clang)
-        export CFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64"
-        export CXXFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64"
-        export CGO_CFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64"
-        export CGO_LDFLAGS="-isysroot $SDKROOT"
         go mod download
 
     - name: Build
-      run: make
+      run: |
+        GOARCH=arm64 GOOS=darwin CGO_ENABLED=0 \
+        SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path) \
+        CC=$(xcrun --sdk iphoneos -f clang) \
+        CFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
+        CXXFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
+        CGO_CFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
+        CGO_LDFLAGS="-isysroot $SDKROOT" \
+        make
         
     - name: Upload artifact
       uses: actions/upload-artifact@v4
