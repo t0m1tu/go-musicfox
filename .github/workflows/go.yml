@@ -29,23 +29,14 @@ jobs:
         export CGO_ENABLED=0
         export SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path)
         export CC=$(xcrun --sdk iphoneos -f clang)
-        export CFLAGS="-s -w -arch arm64 -isysroot $SDKROOT -I$SDKROOT/usr/include"
-        export CXXFLAGS="-s -w -arch arm64 -isysroot $SDKROOT -I$SDKROOT/usr/include"
-        export CGO_LDFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include"
-        export CGO_CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include"
-        echo $SDKROOT
+        export CFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64"
+        export CXXFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64"
+        export CGO_CFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64"
+        export CGO_LDFLAGS="-isysroot $SDKROOT"
         go mod download
 
     - name: Build
-      run: |
-        GOARCH=arm64 GOOS=darwin CGO_ENABLED=1 \
-        SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path) \
-        CC=$(xcrun --sdk iphoneos -f clang) \
-        CFLAGS="-s -w -arch arm64 -isysroot $SDKROOT -I$SDKROOT/usr/include" \
-        CXXFLAGS="-s -w -arch arm64 -isysroot $SDKROOT -I$SDKROOT/usr/include" \
-        CGO_LDFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include" \
-        CGO_CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include" \
-        make
+      run: make
         
     - name: Upload artifact
       uses: actions/upload-artifact@v4
