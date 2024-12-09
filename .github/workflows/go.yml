@@ -23,7 +23,7 @@ jobs:
         
     - name: Install dependencies
       run: |
-        brew install --cask xcode
+        xcodebuild -version
         sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
         go mod download
 
