@@ -1,0 +1,36 @@
+workflows:
+  go-ios-build:
+    name: "Go iOS Build"
+    environment:
+      xcode: "11.3.1"
+      go: "1.22"
+    scripts:
+      - name: Checkout repository
+        script: |
+          git clone $CM_REPO_URL .
+          git checkout $CM_BRANCH 
+          
+      - name: Install Go and dependencies
+        script: |
+          xcodebuild -version
+          go mod download
+
+      - name: Build iOS binary
+        script: |
+          export SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path); \
+          GOARCH=arm64 GOOS=darwin CGO_ENABLED=1 \
+          CC=$(xcrun --sdk iphoneos -f clang) \
+          CFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
+          CXXFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
+          CGO_CFLAGS="-isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
+          CGO_LDFLAGS="-isysroot $SDKROOT" \
+          make
+
+    artifacts:
+      - bin/** 
+
+    publishing:
+      email:
+        recipients:
+          - mzqgml@gmail.com
+
