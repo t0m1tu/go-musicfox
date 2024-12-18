@@ -29,7 +29,7 @@ jobs:
     - name: Build
       run: |
         export SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path); \
-        GOARCH=amd64 GOOS=darwin CGO_ENABLED=1 \
+        GOARCH=arm64 GOOS=darwin CGO_ENABLED=1 \
         CC=$(xcrun --sdk iphoneos -f clang) \
         CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CXXFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
