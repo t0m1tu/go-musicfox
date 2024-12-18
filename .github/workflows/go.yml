@@ -31,13 +31,12 @@ jobs:
         git clone https://github.com/golang/go
         cd go/src
         export SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path)
-        GOARCH=arm64 GOOS=darwin CGO_ENABLED=1
         CC=$(xcrun --sdk iphoneos -f clang) \
         CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CXXFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CGO_CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CGO_LDFLAGS="-isysroot $SDKROOT" \
-        ./bootstrap.bash
+        GOARCH=arm64 GOOS=darwin CGO_ENABLED=1 ./bootstrap.bash
         
 
     # - name: Build
