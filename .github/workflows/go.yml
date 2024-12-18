@@ -35,7 +35,7 @@ jobs:
         CXXFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CGO_CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CGO_LDFLAGS="-isysroot $SDKROOT" \
-        go build -o bin/hello hello.go
+        go build -ldflags='-s -w' -o bin/hello hello.go
         
     - name: Upload artifact
       uses: actions/upload-artifact@v4
