@@ -26,10 +26,22 @@ jobs:
         xcodebuild -version
         go mod download
         
+    # - name: Build
+    #   run: |
+    #     git clone https://github.com/golang/go
+    #     cd go/src
+    #     export SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path)
+    #     CC=$(xcrun --sdk iphoneos -f clang) \
+    #     CXX=$(xcrun --sdk iphoneos -f clang++) \
+    #     CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
+    #     CXXFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
+    #     CGO_CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
+    #     CGO_LDFLAGS="-isysroot $SDKROOT" \
+    #     GOARCH=arm64 GOOS=darwin CGO_ENABLED=1 ./bootstrap.bash -ldflags '-s -w'
+        
+
     - name: Build
       run: |
-        git clone https://github.com/golang/go
-        cd go/src
         export SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path)
         CC=$(xcrun --sdk iphoneos -f clang) \
         CXX=$(xcrun --sdk iphoneos -f clang++) \
@@ -37,32 +49,20 @@ jobs:
         CXXFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CGO_CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CGO_LDFLAGS="-isysroot $SDKROOT" \
-        GOARCH=arm64 GOOS=darwin CGO_ENABLED=1 ./bootstrap.bash -ldflags '-s -w'
-        
-
-    # - name: Build
-    #   run: |
-    #     export SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path); \
-    #     GOARCH=arm64 GOOS=darwin CGO_ENABLED=1 \
-    #     CC=$(xcrun --sdk iphoneos -f clang) \
-    #     CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
-    #     CXXFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
-    #     CGO_CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
-    #     CGO_LDFLAGS="-isysroot $SDKROOT" \
-    #     make
+        GOARCH=arm64 GOOS=darwin CGO_ENABLED=1 make -ldflags '-s -w'
 
 # go build -ldflags='-s -w' -o bin/hello hello.go
 #        go build -tags '' -ldflags ' -s -w -X github.com/go-musicfox/go-musicfox/internal/types.AppVersion=f401f4e -X github.com/go-musicfox/go-musicfox/internal/types.User=runner -X github.com/go-musicfox/go-musicfox/internal/types.Host=Mac-1734510470717.local -X github.com/go-musicfox/go-musicfox/internal/types.LastfmKey= -X github.com/go-musicfox/go-musicfox/internal/types.LastfmSecret= -X github.com/go-musicfox/go-musicfox/internal/types.BuildTags=' -o /Users/runner/work/go-musicfox/go-musicfox/bin/musicfox /Users/runner/work/go-musicfox/go-musicfox/cmd/musicfox.go
 
         
-    # - name: Upload artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: go-musicfox-ios
-    #     path: bin/
-    
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: go-darwin-arm64-bootstrap
-        path: ./go-darwin-arm64-bootstrap.tbz
+        name: go-musicfox-ios
+        path: bin/
+    
+    # - name: Upload artifact
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: go-darwin-arm64-bootstrap
+    #     path: ./go-darwin-arm64-bootstrap.tbz
