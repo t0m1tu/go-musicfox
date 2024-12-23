@@ -32,6 +32,7 @@ jobs:
         cd go/src
         export SDKROOT=$(xcrun --sdk iphoneos --show-sdk-path)
         CC=$(xcrun --sdk iphoneos -f clang) \
+        CXX=$(xcrun --sdk iphoneos -f clang++) \
         CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CXXFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
         CGO_CFLAGS="-s -w -isysroot $SDKROOT -I$SDKROOT/usr/include -arch arm64" \
