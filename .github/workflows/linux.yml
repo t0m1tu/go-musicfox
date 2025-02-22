@@ -1,0 +1,35 @@
+name: Go
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22'
+        
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libflac-dev libasound2-dev
+        go mod download
+        
+    - name: Build
+      run: |     
+        GOARCH=386 GOOS=linux CGO_ENABLED=0 make
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: go-musicfox
+        path: bin/
